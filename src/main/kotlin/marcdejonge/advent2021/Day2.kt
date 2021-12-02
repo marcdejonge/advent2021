@@ -2,9 +2,9 @@ package marcdejonge.advent2021
 
 import marcdejonge.advent2021.Day2.Command.*
 
-fun main() = Day2().printSolution()
+fun main() = Day2.printSolution()
 
-class Day2 : DaySolver(2) {
+object Day2 : DaySolver(2) {
     enum class Command {
         FORWARD,
         UP,

@@ -11,8 +11,8 @@ import kotlin.test.assertEquals
 class DaySolverTests {
     class ExpectedResults : ArgumentsProvider {
         override fun provideArguments(context: ExtensionContext): Stream<Arguments> = Stream.of(
-            Arguments.of(Day1(), 7, 5),
-            Arguments.of(Day2(), 150L, 900L),
+            Arguments.of(Day1, 7, 5),
+            Arguments.of(Day2, 150L, 900L),
         )
     }
 
