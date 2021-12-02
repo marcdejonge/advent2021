@@ -7,6 +7,6 @@ class Input(private val solver: DaySolver) {
         solver::class.java.classLoader.getResource("day${solver.day}.txt") ?: error("Could not load file day${solver.day}.txt")
     }
 
-    inline fun <T> parse(crossinline block: Sequence<String>.() -> T): T =
-        url.openStream().bufferedReader().useLines { lines -> block(lines.filter { it.isNotBlank() }) }
+    inline fun <T> parse(crossinline block: List<String>.() -> T): T =
+        url.openStream().bufferedReader().useLines { lines -> block(lines.filter { it.isNotBlank() }.toList()) }
 }

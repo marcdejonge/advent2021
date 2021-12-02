@@ -9,6 +9,12 @@ import java.util.stream.Stream
 import kotlin.test.assertEquals
 
 class DaySolverTests {
+    class ExpectedResults : ArgumentsProvider {
+        override fun provideArguments(context: ExtensionContext): Stream<Arguments> = Stream.of(
+            Arguments.of(Day1(), 7, 5),
+        )
+    }
+
     @ParameterizedTest
     @ArgumentsSource(ExpectedResults::class)
     fun `verify day solver`(solver: DaySolver, expectedPart1: Any?, expectedPart2: Any?) {
@@ -21,12 +27,6 @@ class DaySolverTests {
             expectedPart2,
             solver.solutionPart2,
             "Solving $solver.solutionPart2 did not return the expected result"
-        )
-    }
-
-    class ExpectedResults : ArgumentsProvider {
-        override fun provideArguments(context: ExtensionContext): Stream<Arguments> = Stream.of(
-            Arguments.of(Day1(), null, null),
         )
     }
 }

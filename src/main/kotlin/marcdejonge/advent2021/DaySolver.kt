@@ -8,9 +8,9 @@ abstract class DaySolver(val day: Int) {
     val solutionPart1 by lazy { calcPart1() }
     val solutionPart2 by lazy { calcPart2() }
 
-    open fun calcPart1(): Long? = null
+    open fun calcPart1(): Number? = null
 
-    open fun calcPart2(): Long? = null
+    open fun calcPart2(): Number? = null
 
     fun printSolution() {
         println("$this:")
