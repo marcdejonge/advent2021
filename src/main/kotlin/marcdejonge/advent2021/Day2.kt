@@ -21,7 +21,7 @@ object Day2 : DaySolver(2) {
         }
     }
 
-    data class Direction(
+    data class Position(
         val horizontal: Long = 0,
         val depth: Long = 0,
         val aim: Long = 0,
@@ -30,20 +30,23 @@ object Day2 : DaySolver(2) {
     }
 
     override fun calcPart1() =
-        commands.fold(Direction()) { (horizontal, depth), (command, size) ->
+        commands.fold(Position()) { current, (command, size) ->
             when (command) {
-                FORWARD -> Direction((horizontal + size), depth)
-                DOWN -> Direction(horizontal, (depth + size))
-                UP -> Direction(horizontal, (depth - size))
+                FORWARD -> current.copy(horizontal = current.horizontal + size)
+                DOWN -> current.copy(depth = current.depth + size)
+                UP -> current.copy(depth = current.depth - size)
             }
         }.result
 
     override fun calcPart2() =
-        commands.fold(Direction()) { (horizontal, depth, aim), (command, size) ->
+        commands.fold(Position()) { current, (command, size) ->
             when (command) {
-                FORWARD -> Direction((horizontal + size), depth + (aim * size), aim)
-                DOWN -> Direction(horizontal, depth, (aim + size))
-                UP -> Direction(horizontal, depth, (aim - size))
+                FORWARD -> current.copy(
+                    horizontal = current.horizontal + size,
+                    depth = current.depth + (current.aim * size)
+                )
+                DOWN -> current.copy(aim = current.aim + size)
+                UP -> current.copy(aim = current.aim - size)
             }
         }.result
 }
