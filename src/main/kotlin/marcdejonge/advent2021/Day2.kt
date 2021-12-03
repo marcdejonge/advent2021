@@ -13,11 +13,9 @@ object Day2 : DaySolver(2) {
 
     private val regex = """(\w+) (\d+)""".toRegex()
 
-    private val commands = input.parse {
-        mapNotNull {
-            regex.find(it)?.destructured?.let { (command, size) ->
-                valueOf(command.uppercase()) to size.toLong()
-            }
+    private val commands = input.mapNotNull {
+        regex.find(it)?.destructured?.let { (command, size) ->
+            valueOf(command.uppercase()) to size.toLong()
         }
     }
 

@@ -1,10 +1,14 @@
 package marcdejonge.advent2021
 
-import marcdejonge.advent2021.util.Input
-
 abstract class DaySolver(val day: Int) {
-    internal val input: Input
-        get() = Input(this)
+    private val url by lazy {
+        this::class.java.classLoader.getResource("day$day.txt") ?: error("Could not load file day$day.txt")
+    }
+
+    val input by lazy {
+        url.openStream().bufferedReader().useLines { lines -> lines.filter { it.isNotBlank() }.toList() }
+    }
+
     val solutionPart1 by lazy { calcPart1() }
     val solutionPart2 by lazy { calcPart2() }
 
