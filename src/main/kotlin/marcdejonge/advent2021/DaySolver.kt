@@ -5,8 +5,8 @@ abstract class DaySolver(val day: Int) {
         this::class.java.classLoader.getResource("day$day.txt") ?: error("Could not load file day$day.txt")
     }
 
-    val input by lazy {
-        url.openStream().bufferedReader().useLines { lines -> lines.filter { it.isNotBlank() }.toList() }
+    val input: List<String> by lazy {
+        url.openStream().bufferedReader().lines().toList()
     }
 
     val solutionPart1 by lazy { calcPart1() }
