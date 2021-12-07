@@ -1,5 +1,7 @@
 package marcdejonge.advent2021
 
+import kotlin.system.measureTimeMillis
+
 abstract class DaySolver(val day: Int) {
     private val url by lazy {
         this::class.java.classLoader.getResource("day$day.txt") ?: error("Could not load file day$day.txt")
@@ -18,8 +20,11 @@ abstract class DaySolver(val day: Int) {
 
     fun printSolution() {
         println("$this:")
-        println("    Part 1: ${solutionPart1 ?: "no solution found"}")
-        println("    Part 2: ${solutionPart2 ?: "no solution found"}")
+        val time = measureTimeMillis {
+            println("    Part 1: ${solutionPart1 ?: "no solution found"}")
+            println("    Part 2: ${solutionPart2 ?: "no solution found"}")
+        }
+        println("Calculated in $time milliseconds")
     }
 
     override fun toString() = "Day $day"
