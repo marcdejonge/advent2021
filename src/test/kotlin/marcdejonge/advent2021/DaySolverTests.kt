@@ -15,6 +15,7 @@ class DaySolverTests {
             Arguments.of(Day2, 150L, 900L),
             Arguments.of(Day3, 198, 230),
             Arguments.of(Day4, 4512, 1924),
+            Arguments.of(Day5, 5, 12),
         )
     }
 
