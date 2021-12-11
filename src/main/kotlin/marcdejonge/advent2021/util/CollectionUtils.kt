@@ -15,3 +15,5 @@ fun <T : Comparable<T>> Sequence<T>.middle(): T = toList().sorted().let { sorted
 }
 
 fun <T> Sequence<T>.sumOfNotNull(block: (T) -> Long?) = mapNotNull(block).sum()
+
+fun <T> T.iterate(step: (T) -> T): Sequence<T> = generateSequence(this) { step(it) }

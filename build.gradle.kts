@@ -10,6 +10,7 @@ dependencies {
     // Implementation dependencies
     implementation(platform("org.jetbrains.kotlin:kotlin-bom:1.6.0"))
     implementation("org.jetbrains.kotlin:kotlin-stdlib-jdk8")
+    implementation("com.diogonunes:JColor:5.2.0")
 
     // Testing libraries
     testImplementation(platform("org.junit:junit-bom:5.8.2"))
