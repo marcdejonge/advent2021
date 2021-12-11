@@ -14,4 +14,4 @@ fun <T : Comparable<T>> Sequence<T>.middle(): T = toList().sorted().let { sorted
     sorted[sorted.size / 2]
 }
 
-fun <T> List<T>.sumOfNotNull(block: (T) -> Long?) = asSequence().mapNotNull(block).sum()
+fun <T> Sequence<T>.sumOfNotNull(block: (T) -> Long?) = mapNotNull(block).sum()
