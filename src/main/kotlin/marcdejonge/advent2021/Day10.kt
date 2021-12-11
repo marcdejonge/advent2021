@@ -33,5 +33,5 @@ object Day10 : DaySolver(10) {
 
     private val part2Score = mapOf('(' to 1L, '[' to 2L, '{' to 3L, '<' to 4L)
     override fun calcPart2() = parsedLines.filter { it.invalidChars.depth == 0 }
-        .map { it.stack.mapNotNull(part2Score::get).toList().foldRight(0L) { next, acc -> next + acc * 5 } }.middle()
+        .map { it.stack.mapNotNull(part2Score::get).fold(0L) { acc, next -> next + acc * 5 } }.middle()
 }
