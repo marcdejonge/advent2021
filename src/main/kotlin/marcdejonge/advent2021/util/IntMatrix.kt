@@ -1,49 +1,73 @@
 package marcdejonge.advent2021.util
 
-@JvmInline
-value class IntMatrix(private val array: Array<IntArray>) {
-    constructor(list: List<List<Int>>) : this(list.map { it.toIntArray() }.toTypedArray())
+import marcdejonge.advent2021.Day11
 
-    operator fun get(index: Index2D) = array[index.y][index.x]
+fun main() {
+    println(Day11.startField.map { (_, v) -> v + 1 })
+}
 
-    fun values() = indexed().map { (_, v) -> v }
+class IntMatrix(
+    private val array: IntArray,
+    private val lineLength: Int,
+) {
+    constructor(list: List<List<Int>>) : this(list.flatten().toIntArray(), list.first().size)
 
-    fun indexed() = sequence {
-        array.indices.forEach { y -> array[y].indices.forEach { x -> yield(Index2D(x, y).withValue()) } }
+    private inline val Index2D.arrayIx get() = x + y * lineLength
+    private inline val Int.toIndex2D get() = Index2D(this % lineLength, this / lineLength)
+
+    operator fun get(index: Index2D) = array[index.arrayIx]
+
+    private operator fun set(index: Index2D, value: Int) {
+        array[index.arrayIx] = value
     }
 
-    private fun isInRange(index: Index2D) = index.let { (x, y) -> y in array.indices && x in array[y].indices }
+    fun values() = array.asSequence()
 
-    fun neighbours(index: Index2D) = sequenceOf(
+    fun indexed() = sequence {
+        array.indices.forEach { arrayIx -> yield(arrayIx.toIndex2D.withValue(array[arrayIx])) }
+    }
+
+    private fun isInRange(index: Index2D) = index.let { (x, y) ->
+        (x in 0 until lineLength) && (y * lineLength in array.indices)
+    }
+
+    /** Gives a sequence of all the neighbouring values, only horizontal and vertical */
+    fun directNeighbours(index: Index2D) = sequenceOf(
         index.up, index.down, index.left, index.right
     ).filter { isInRange(it) }.map { it.withValue() }
 
-    fun neighboursDiag(index: Index2D) = sequenceOf(
+    /** Gives a sequence of all the neighbouring values, also diagonal */
+    fun allNeighbours(index: Index2D) = sequenceOf(
         index.up, index.down, index.left, index.right,
         index.upLeft, index.upRight, index.downLeft, index.downRight
     ).filter { isInRange(it) }.map { it.withValue() }
 
     fun map(block: (IndexedIntValue2D) -> Int) = IntMatrix(
-        array.mapIndexed { y, row ->
-            row.mapIndexed { x, v ->
-                block(IndexedIntValue2D(Index2D(x, y), v))
-            }
-        }
+        array.copyOf().also {
+            it.indices.forEach { ix -> it[ix] = block(IndexedIntValue2D(ix.toIndex2D, it[ix])) }
+        }, lineLength
     )
 
-    fun applyValues(changes: Sequence<IndexedIntValue2D>) = array.copyOf().let { newArray ->
-        changes.forEach { (ix, v) ->
-            if (newArray[ix.y] === array[ix.y]) newArray[ix.y] = array[ix.y].copyOf()
-            newArray[ix.y][ix.x] = v
-        }
-        IntMatrix(newArray)
-    }
+    fun applyValues(changes: Sequence<IndexedIntValue2D>) = IntMatrix(
+        array.copyOf().also {
+            changes.forEach { (ix, v) ->
+                it[ix.arrayIx] = v
+            }
+        }, lineLength
+    )
 
     private fun Index2D.withValue() = withValue(this@IntMatrix[this])
 
-    fun toString(block: (Int) -> String) = array.joinToString("\n", postfix = "\n") { line ->
-        line.joinToString("") { block(it) }
-    }
+    override fun equals(other: Any?) = (other as? IntMatrix)?.let {
+        array.contentEquals(it.array) && lineLength == it.lineLength
+    } ?: false
+
+    override fun hashCode() = array.contentHashCode() * 37 + lineLength
+
+    fun toString(block: (Int) -> String) = array.asSequence().chunked(lineLength)
+        .joinToString("\n", postfix = "\n") { line ->
+            line.joinToString("") { block(it) }
+        }
 
     override fun toString() = toString(Int::toString)
 }

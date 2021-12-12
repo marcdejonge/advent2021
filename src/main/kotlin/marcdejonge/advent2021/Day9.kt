@@ -10,11 +10,11 @@ object Day9 : DaySolver(9) {
     private val heights = IntMatrix(input.map { it.toCharArray().map { c -> c.digitToInt() } })
 
     override fun calcPart1() = heights.indexed()
-        .filter { (index, value) -> heights.neighbours(index).all { it.value > value } }
+        .filter { (index, value) -> heights.directNeighbours(index).all { it.value > value } }
         .sumOf { (_, value) -> 1 + value }
 
     private val findLowestPoint = Memoize<Index2D, Index2D> { index, self ->
-        heights.neighbours(index).minByOrNull { (_, nValue) -> nValue }?.let {
+        heights.directNeighbours(index).minByOrNull { (_, nValue) -> nValue }?.let {
             if (it.value > heights[index]) index // Low point found
             else self(it.index)
         } ?: index
