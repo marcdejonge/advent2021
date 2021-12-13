@@ -17,6 +17,8 @@ interface Stack<T> : Sequence<T> {
     companion object {
         @Suppress("UNCHECKED_CAST") // This just works because the Empty object doesn't store anything
         fun <T> empty(): Stack<T> = Empty as Stack<T>
+
+        operator fun <T> invoke(single: T): Stack<T> = NonEmpty(single, empty())
     }
 
     private object Empty : Stack<Any> {
