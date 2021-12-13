@@ -35,3 +35,6 @@ data class IntVector2(val x: Int, val y: Int) {
 }
 
 infix fun Int.v(y: Int) = IntVector2(this, y)
+
+operator fun IntProgression.times(other: IntProgression): Sequence<IntVector2> =
+    other.asSequence().flatMap { y -> this.asSequence().map { x -> IntVector2(x, y) } }

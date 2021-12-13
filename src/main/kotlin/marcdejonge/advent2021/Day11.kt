@@ -1,20 +1,19 @@
 package marcdejonge.advent2021
 
 import marcdejonge.advent2021.util.IntMatrix
-import marcdejonge.advent2021.util.applyTo
 import marcdejonge.advent2021.util.findFirstUnchanged
 import marcdejonge.advent2021.util.iterate
+import marcdejonge.advent2021.util.withValue
 
 fun main() = Day11.printSolution()
 
 object Day11 : DaySolver(11) {
-    val startField = IntMatrix(input.map { line -> line.map { it.digitToInt() } })
+    private val startField = IntMatrix(input.map { line -> line.map { it.digitToInt() } })
 
-    private fun flashOctopuses(field: IntMatrix) = field.indexed().filter { (_, value) -> value > 9 }
+    private fun flashOctopuses(field: IntMatrix) = field + field.indexed().filter { (_, value) -> value > 9 }
         .flatMap { (ix, _) -> field.allNeighbours(ix).map { (nIx, _) -> nIx.withValue(1) } + ix.withValue(-1000) }
-        .groupBy { it.index } // Group all the changed by the index
-        .map { (key, values) -> key.withValue(values.sumOf { it.value } + field[key]) }
-        .applyTo(field)
+        .groupBy({ it.index }, { it.value }) // Group all the changed by the index
+        .map { (key, values) -> key.withValue(values.sum()) }
 
     private fun step(field: IntMatrix) =
         field.map { (_, v) -> v + 1 } // First add 1 to every value

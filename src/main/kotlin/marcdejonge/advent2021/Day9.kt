@@ -1,7 +1,7 @@
 package marcdejonge.advent2021
 
-import marcdejonge.advent2021.util.Index2D
 import marcdejonge.advent2021.util.IntMatrix
+import marcdejonge.advent2021.util.IntVector2
 import marcdejonge.advent2021.util.Memoize
 
 fun main() = Day9.printSolution()
@@ -13,7 +13,7 @@ object Day9 : DaySolver(9) {
         .filter { (index, value) -> heights.directNeighbours(index).all { it.value > value } }
         .sumOf { (_, value) -> 1 + value }
 
-    private val findLowestPoint = Memoize<Index2D, Index2D> { index, self ->
+    private val findLowestPoint = Memoize<IntVector2, IntVector2> { index, self ->
         heights.directNeighbours(index).minByOrNull { (_, nValue) -> nValue }?.let {
             if (it.value > heights[index]) index // Low point found
             else self(it.index)
