@@ -29,6 +29,7 @@ class DaySolverTests {
 ██      ██
 ██      ██
 ██████████"""),
+            Arguments.of(Day14, 1588L, 2188189693529L),
         )
     }
 
